@@ -1,2 +1,3 @@
 # lurc
-Interactive HTTP client based on curl
+
+**Interactive command-line HTTP client based on curl**
