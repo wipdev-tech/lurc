@@ -17,7 +17,10 @@ var styles = struct {
 	header l.Style
 	prompt l.Style
 }{
-	header: l.NewStyle().Background(l.Color("36")).Bold(true).Foreground(l.Color("232")),
+	header: l.NewStyle().
+		// Background(l.Color("36")).
+		Bold(true).
+		Foreground(l.Color("36")),
 	prompt: l.NewStyle().Foreground(l.Color("248")),
 }
 
@@ -64,7 +67,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m model) View() string {
-	return "\n" + styles.header.Render("  lurc  ") + "\n\n" +
+	return styles.header.Render(cursiveLogo) + "\n\n" +
 		fmt.Sprintf(
 			"URL:\n%s\n\n%s",
 			m.textInput.View(),
