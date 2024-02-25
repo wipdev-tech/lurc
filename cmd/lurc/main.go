@@ -34,7 +34,7 @@ func initialModel() model {
 	ti.Focus()
 	// ti.CharLimit = 156
 	// ti.Width = 20
-	ti.SetValue("http://localhost:8080")
+	ti.Placeholder = "http://localhost:8080"
 
 	return model{
 		textInput: ti,
@@ -82,6 +82,10 @@ func main() {
 		log.Fatal(err)
 	}
 	text := m.(model).textInput.Value()
+	if text == "" {
+		text = m.(model).textInput.Placeholder
+	}
+
 	fmt.Println(text)
 	// url := ""
 	// fmt.Printf(styles.prompt.Render("URL: "))
