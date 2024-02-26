@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"log"
-	"os/exec"
-	"strings"
+	"net/http"
 
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
@@ -88,12 +88,21 @@ func main() {
 		text = m.(model).textInput.Placeholder
 	}
 
-	var out strings.Builder
-	cmd := exec.Command("curl", text)
-	cmd.Stdout = &out
-	err = cmd.Run()
+	method := "GET"
+	var body io.Reader
+	request, err := http.NewRequest(method, text, body)
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println("Error forming request:", err)
 	}
-	fmt.Println(out.String())
+	client := http.DefaultClient
+	response, err := client.Do(request)
+	if err != nil {
+		fmt.Println("Error getting response:", err)
+		return
+	}
+	responseBody, err := io.ReadAll(response.Body)
+	if err != nil {
+		fmt.Println("Error forming response body:", err)
+	}
+	fmt.Println(string(responseBody))
 }
