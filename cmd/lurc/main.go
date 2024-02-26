@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"log"
+	"os/exec"
+	"strings"
 
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
@@ -86,10 +88,12 @@ func main() {
 		text = m.(model).textInput.Placeholder
 	}
 
-	fmt.Println(text)
-	// url := ""
-	// fmt.Printf(styles.prompt.Render("URL: "))
-	// fmt.Scan(&url)
-	//
-	// fmt.Println(url)
+	var out strings.Builder
+	cmd := exec.Command("curl", text)
+	cmd.Stdout = &out
+	err = cmd.Run()
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(out.String())
 }
